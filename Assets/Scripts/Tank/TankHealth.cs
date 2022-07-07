@@ -51,9 +51,11 @@ public class TankHealth : MonoBehaviour
             }
             // lose some hp for small bumps
             Debug.Log("player bonk wall");
-
-            audioSource.PlayOneShot(m_BonkAudioClip, 1.0F);
-            m_RigidBody.GetComponent<TankHealth>().TakeDamage(15);
+            if (!m_Dead)
+            {
+                audioSource.PlayOneShot(m_BonkAudioClip, 1.0F);
+                m_RigidBody.GetComponent<TankHealth>().TakeDamage(15);
+            }
 
         }
     }

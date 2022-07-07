@@ -5,6 +5,7 @@ public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
     public Rigidbody m_Shell;
+    public Rigidbody m_GiantShell;
     public Transform m_FireTransform;
     public Slider m_AimSlider;
     public AudioSource m_ShootingAudio;
@@ -19,6 +20,8 @@ public class TankShooting : MonoBehaviour
     private float m_ChargeSpeed;
     private bool m_Fired;
     private float nextFireTime;
+    private float nextExplosionTime;
+    private float explosionCooldown;
 
     private void OnEnable()
     {
@@ -31,6 +34,8 @@ public class TankShooting : MonoBehaviour
     {
         m_FireButton = "Fire" + m_PlayerNumber;
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+        explosionCooldown = 5f;
+        m_Fired = false;
     }
 
 
@@ -38,7 +43,13 @@ public class TankShooting : MonoBehaviour
     {
         m_AimSlider.value = m_MinLaunchForce;
 
-        if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
+        if (Input.GetKeyDown(KeyCode.E) && !m_Fired)
+        // special exploding bullets key
+        {
+            GiantBulletFire(m_CurrentLaunchForce, 1);
+            m_Fired = false;
+        }
+        else if (m_CurrentLaunchForce >= m_MaxLaunchForce && !m_Fired)
         {
             m_CurrentLaunchForce = m_MaxLaunchForce;
             Fire(m_CurrentLaunchForce, 1);
@@ -60,6 +71,7 @@ public class TankShooting : MonoBehaviour
         {
             Fire(m_CurrentLaunchForce, 1);
         }
+
     }
 
 
@@ -79,5 +91,21 @@ public class TankShooting : MonoBehaviour
 
         m_CurrentLaunchForce = m_MinLaunchForce;
     }
-    
+
+    public void GiantBulletFire(float launchForce, float fireRate)
+    {
+        if (Time.time <= nextExplosionTime) return;
+        // longer CD than regular shooting
+        nextExplosionTime = Time.time + fireRate + explosionCooldown;
+        m_Fired = true;
+        Rigidbody shellInstance =
+            Instantiate(m_GiantShell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+        shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
+
+        m_ShootingAudio.clip = m_FireClip;
+        m_ShootingAudio.Play();
+
+        m_CurrentLaunchForce = m_MinLaunchForce;
+    }
+
 }

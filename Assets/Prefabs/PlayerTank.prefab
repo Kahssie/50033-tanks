@@ -699,7 +699,7 @@ MonoBehaviour:
   m_FullHealthColor: {r: 0, g: 1, b: 0, a: 1}
   m_ZeroHealthColor: {r: 1, g: 0, b: 0, a: 1}
   m_ExplosionPrefab: {fileID: 151086, guid: ee49a9a8678ecf8468eb488e1ac8d42b, type: 3}
-  m_AudioSource: {fileID: 0}
+  audioSource: {fileID: 0}
   m_BonkAudioClip: {fileID: 8300000, guid: ec3957abcfe739341bb4adbb8fa1e579, type: 3}
 --- !u!114 &114284224917267974
 MonoBehaviour:
@@ -715,6 +715,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerNumber: 1
   m_Shell: {fileID: 54739468841794208, guid: 5bbfc35f0feb42f4a9a6687158eb3089, type: 3}
+  m_GiantShell: {fileID: 7631876795556249384, guid: 14e4c680844ab574783a122e7c57695e,
+    type: 3}
   m_FireTransform: {fileID: 4841468342918690}
   m_AimSlider: {fileID: 114011593879431358}
   m_ShootingAudio: {fileID: 82552250368204192}
